@@ -40,11 +40,10 @@ async function readPdfFile(filePath) {
   return [new Document({ text: fullText, metadata: { fileName: path.basename(filePath) } })];
 }
 
-async function main() {
+export async function runQuery(prompt) {
   const filePath = path.join("data", "test.pdf");
   if (!fs.existsSync(filePath)) {
-    console.error("No se encontró el archivo:", filePath);
-    process.exit(1);
+    throw new Error(`No se encontró el archivo: ${filePath}`);
   }
 
   let docs;
@@ -59,10 +58,6 @@ async function main() {
   const index = await VectorStoreIndex.fromDocuments(docs);
   const queryEngine = index.asQueryEngine();
 
- const prompt= "Resumime en 2 parrafos el archivo"
-
   const response = await queryEngine.query({ query: prompt });
-  console.log("Response: ",response.toString());
+  return response.toString();
 }
-
-main().catch(console.error);
