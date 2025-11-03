@@ -1,0 +1,18 @@
+{
+  "name": "test-lama-index",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@llamaindex/openai": "^0.4.21",
+    "llamaindex": "^0.12.0",
+    "pdfjs-dist": "^3.11.174"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
