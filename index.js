@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import 'dotenv/config';
 
 import { Document, VectorStoreIndex, Settings } from "llamaindex";
 import { OpenAI, OpenAIEmbedding } from "@llamaindex/openai";
