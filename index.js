@@ -9,7 +9,7 @@ import pdfjsLib from "pdfjs-dist/legacy/build/pdf.js";
 
 
 Settings.llm = new OpenAI({
-  model: "gpt-4o-mini",
+  model: "gpt-4o",
   apiKey: process.env.OPENAI_API_KEY,
 });
 
@@ -23,11 +23,12 @@ const systemPrompt = `
   Tu objetivo es ayudar a los usuarios a entender y obtener información sobre los sistemas y procesos descritos en esos documentos.  
 
   Reglas:
-  - Si la respuesta se encuentra en los documentos, explícalo con claridad y concisión.
-  - Si no tienes información suficiente en los documentos, responde con:  
+  - Si la respuesta se encuentra total o parcialmente en los documento, explícalo con claridad y concisión.
+  - Si no tienes información suficiente en los documentos, responde solo con:  
     "No dispongo de esa información en los documentos proporcionados. ¿Podrías reformular o especificar tu pregunta?"
   - No inventes ni alucines información fuera de lo que se te proporcionó.
   - Prioriza siempre la información documental antes que tus conocimientos generales.
+  - No respondas con caracteres de formateo de texto debido a que la respuesta se va a mosstrar directamente al usuario
 `;
 
 
@@ -70,8 +71,9 @@ export async function runQuery(prompt) {
   const index = await VectorStoreIndex.fromDocuments(docs);
   const queryEngine = index.asQueryEngine();
 
-  var completedQuery = `${systemPrompt}\n\nPregunta del usuario: ${prompt}`;
+  var completedQuery = `${systemPrompt}Pregunta del usuario: ${prompt}`;
 
   const response = await queryEngine.query({ query: completedQuery });
+
   return response.toString();
 }
