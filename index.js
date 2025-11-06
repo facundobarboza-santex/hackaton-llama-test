@@ -18,6 +18,18 @@ Settings.embedModel = new OpenAIEmbedding({
   apiKey: process.env.OPENAI_API_KEY
 });
 
+const systemPrompt = `
+  Eres un asistente especializado en responder consultas únicamente basadas en la información proporcionada en los documentos PDF cargados.  
+  Tu objetivo es ayudar a los usuarios a entender y obtener información sobre los sistemas y procesos descritos en esos documentos.  
+
+  Reglas:
+  - Si la respuesta se encuentra en los documentos, explícalo con claridad y concisión.
+  - Si no tienes información suficiente en los documentos, responde con:  
+    "No dispongo de esa información en los documentos proporcionados. ¿Podrías reformular o especificar tu pregunta?"
+  - No inventes ni alucines información fuera de lo que se te proporcionó.
+  - Prioriza siempre la información documental antes que tus conocimientos generales.
+`;
+
 
 function readTxtFile(filePath) {
   const text = fs.readFileSync(filePath, "utf-8").trim();
@@ -58,6 +70,8 @@ export async function runQuery(prompt) {
   const index = await VectorStoreIndex.fromDocuments(docs);
   const queryEngine = index.asQueryEngine();
 
-  const response = await queryEngine.query({ query: prompt });
+  var completedQuery = `${systemPrompt}\n\nPregunta del usuario: ${prompt}`;
+
+  const response = await queryEngine.query({ query: completedQuery });
   return response.toString();
 }
