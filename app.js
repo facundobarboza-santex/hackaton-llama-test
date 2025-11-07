@@ -23,10 +23,11 @@ app.post('/query', async (req, res) => {
     const response = await runQuery(prompt);
     // detectar URLs
     const urls = extractUrls(response);
+    const cleanResponse = response.replace(/https?:\/\/[^\s]+/g, "").trim();
 
     res.json({
       prompt,
-      response: response,
+      response: cleanResponse,
       urls: urls.length > 0 ? urls : null
     });
   } catch (error) {
