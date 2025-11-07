@@ -1,5 +1,5 @@
 import express from 'express';
-import { runQuery } from './index.js';
+import { runQuery, extractUrls } from './index.js';
 import 'dotenv/config';
 
 const app = express();
@@ -21,8 +21,14 @@ app.post('/query', async (req, res) => {
     }
 
     const response = await runQuery(prompt);
+    // detectar URLs
+    const urls = extractUrls(responseText);
 
-    res.json({ prompt, response });
+    res.json({
+      prompt,
+      response: cleanResponse,
+      urls: urls.length > 0 ? urls : null
+    });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: error.message });

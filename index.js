@@ -53,6 +53,12 @@ async function readPdfFile(filePath) {
   return [new Document({ text: fullText, metadata: { fileName: path.basename(filePath) } })];
 }
 
+export function extractUrls(text) {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const matches = text.match(urlRegex);
+  return matches || [];
+}
+
 export async function runQuery(prompt) {
   const filePath = path.join("data", "test.pdf");
   if (!fs.existsSync(filePath)) {
