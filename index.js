@@ -9,7 +9,7 @@ import pdfjsLib from "pdfjs-dist/legacy/build/pdf.js";
 
 
 Settings.llm = new OpenAI({
-  model: "gpt-4o",
+  model: "gpt-4o-mini",
   apiKey: process.env.OPENAI_API_KEY,
 });
 
