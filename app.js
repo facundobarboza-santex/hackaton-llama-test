@@ -22,7 +22,7 @@ app.post('/query', async (req, res) => {
 
     const response = await runQuery(prompt);
     // detectar URLs
-    const urls = extractUrls(responseText);
+    const urls = extractUrls(response);
 
     res.json({
       prompt,
