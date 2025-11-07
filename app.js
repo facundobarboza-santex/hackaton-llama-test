@@ -26,7 +26,7 @@ app.post('/query', async (req, res) => {
 
     res.json({
       prompt,
-      response: cleanResponse,
+      response: response,
       urls: urls.length > 0 ? urls : null
     });
   } catch (error) {
